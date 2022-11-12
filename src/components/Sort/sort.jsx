@@ -1,14 +1,9 @@
-
 import './index.css';
 
-
-function Sort() {
+function Sort () {
 	return (
-		<>
-			null
-		</>
-
-	);
-}
+	null
+	)
+};
 
 export default Sort;
