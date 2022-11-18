@@ -101,13 +101,12 @@
 .card__favorite svg {
 	fill: #ffffff;
 	stroke-width: 1px;
-	stroke: #7b8e98
+	stroke: #7b8e98;
 }
 
 .card__favorite_is-active svg {
 	fill: #f44336;
 	stroke-width: 0;
-
 }
 
 .card__cart {
@@ -136,4 +135,21 @@
 .btn_type_primary:hover {
 	background-color: #ffaa0d;
 	color: #f44336;
+}
+
+.tag {
+	padding: 2px 8px;
+	border-radius: 20px;
+	font-weight: 800;
+	font-size: 16px;
+	line-height: 20px;
+}
+
+.tag_type_new {
+	background-color: #03a9f4;
+	color: #ffffff;
+}
+.tag_type_sale {
+	background-color: #01a54e;
+	color: #ffffff;
 }

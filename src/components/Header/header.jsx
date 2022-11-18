@@ -1,20 +1,19 @@
-import './index.css';
-
+import s from './index.module.css';
 
 function Header({ children, user, onUpdateUser }) {
 
   const handleClickButtonEdit = (e) => {
     e.preventDefault();
-    onUpdateUser({ name: 'Диана', about: "Ментор" })
+    onUpdateUser({ name: 'Диана Сысоева', about: "Ментор" })
   }
   return (
-    <header className='header'>
+    <header className= {s.header}>
       <div className="container">
         {user?.email && <span>{user?.email}</span>}
         {user?.name && <span>{user?.name}</span>}
 
         <button className='btn' onClick={handleClickButtonEdit}>Изменить</button>
-        <div className='header__wrapper'>
+        <div className={s.header__wrapper}>
           {children}
         </div>
       </div>
