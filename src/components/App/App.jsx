@@ -11,6 +11,7 @@ import SearchInfo from '../SearchInfo/search-info';
 import api from '../../utils/api';
 import useDebounce from '../../hooks/useDebounce';
 import { isLiked } from '../../utils/product';
+import Spinner from '../Spinner';
 
 
 function App() {
@@ -18,15 +19,18 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentUser, setCurrentUser] = useState(null);
   const debounceSearchQuery = useDebounce(searchQuery, 200);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleRequest = () => { //меняем фильтрацию из массива на поиск с сервера
-    // const filterCards = cards.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
-    // setCards(filterCards);
+  const handleRequest = () => {
+    setIsLoading(true);
     api.search(debounceSearchQuery)
       .then((searchResult) => {
         setCards(searchResult)
       })
       .catch(err => console.log(err))
+      .finally(() => {
+        setIsLoading(false);
+      })
   }
 
   const handleFormSubmit = (e) => {
@@ -35,18 +39,22 @@ function App() {
   }
 
   useEffect(() => {
+    setIsLoading(true);
     Promise.all([api.getProductList(), api.getUserInfo()])
       .then(([productsData, userData]) => {
         setCurrentUser(userData)
         setCards(productsData.products)
       })
       .catch(err => console.log(err))
+      .finally(() => {
+        setIsLoading(false);
+      })
 
   }, [])
 
   useEffect(() => {
     handleRequest()
-    // console.log('INPUT', debounceSearchQuery);
+   
   }, [debounceSearchQuery])
 
 
@@ -66,13 +74,12 @@ function App() {
     api.changeLikeProduct(product._id, liked)
       .then((newCard) => {
         const newProducts = cards.map(cardState => {
-          // console.log('Карточка из стейта', cardState)
-          // console.log('Карточка с сервера ', cardState)
           return cardState._id === newCard._id ? newCard : cardState;
         })
         setCards(newProducts);
       })
   }
+  
   return (
     <>
       <Header user={currentUser} onUpdateUser={handleUpdateUser}>
@@ -86,7 +93,10 @@ function App() {
         <SearchInfo searchCount={cards.length} searchText={searchQuery} />
         <Sort />
         <div className='contents__card'>
-          <CardList goods={cards} onProductLike={handleProductLike} currentUser={currentUser} />
+          {isLoading
+            ? <Spinner />
+            : <CardList goods={cards} onProductLike={handleProductLike} currentUser={currentUser} />
+          }
         </div>
       </main>
       <Footer />
