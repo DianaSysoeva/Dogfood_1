@@ -4,15 +4,20 @@ import { ReactComponent as Save } from './img/save.svg';
 import truck from './img/truck.svg';
 import quality from './img/quality.svg'
 import { calcDiscountPrice, createMarkup, isLiked } from '../../utils/product';
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { UserContext } from '../../context/userContext';
 
-const Product = ({ pictures, likes = [], reviews, tags, name, price, discount, description, wight, _id, currentUser }) => {
+const Product = ({ pictures, onProductLike, likes = [], reviews, tags, name, price, discount, description, wight, _id }) => {
+	const { user: currentUser } = useContext(UserContext)
+	const navigate = useNavigate();
 	const discount__price = calcDiscountPrice(price, discount);
 	const isLike = isLiked(likes, currentUser?._id);
 	const descriptionHTML = createMarkup(description);
 	return (
 		<>
 			<div>
-				<a href="#" className="button-back">Назад</a>
+				<a href="#" className="button-back" onClick={() => navigate(-1)}>Назад</a>
 				<h1 className={s.productTitle}> {name} </h1>
 				<div>
 					<span>Артикул:</span> <b>2388907</b>
@@ -34,7 +39,7 @@ const Product = ({ pictures, likes = [], reviews, tags, name, price, discount, d
 						<a href="/#" className={cn('btn', 'btn_type_primary', s.cart)}>В корзину</a>
 
 					</div>
-					<button className={cn(s.favorite)}>
+					<button className={cn(s.favorite, { [s.favoriteActive]: isLike })} onClick={onProductLike}>
 						<Save />
 						<span>{isLike ? "В избранном" : "В избранное"}</span>
 					</button>

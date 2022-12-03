@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import CardList from '../CardList/card-list';
 import Footer from '../Footer/footer';
 import Header from '../Header/header';
@@ -12,6 +12,11 @@ import api from '../../utils/api';
 import useDebounce from '../../hooks/useDebounce';
 import { isLiked } from '../../utils/product';
 import Spinner from '../Spinner';
+import { CatalogPage } from '../../pages/CatalogPage/catalog-page'
+import { ProductPage } from '../../pages/ProductPage/product-page';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { NotFoundPage } from '../../pages/NotFoundPage/not-found-page';
+import { UserContext } from '../../context/userContext';
 
 
 function App() {
@@ -19,11 +24,13 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentUser, setCurrentUser] = useState(null);
   const debounceSearchQuery = useDebounce(searchQuery, 200);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleRequest = () => {
+  const navigate = useNavigate();
+
+  const handleRequest = useCallback(() => {
     setIsLoading(true);
-    api.search(debounceSearchQuery)
+    api.search(searchQuery)
       .then((searchResult) => {
         setCards(searchResult)
       })
@@ -31,10 +38,11 @@ function App() {
       .finally(() => {
         setIsLoading(false);
       })
-  }
+  }, [searchQuery])
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
+  const handleFormSubmit = (inputText) => {
+    navigate('/');
+    setSearchQuery(inputText);
     handleRequest();
   }
 
@@ -54,7 +62,6 @@ function App() {
 
   useEffect(() => {
     handleRequest()
-   
   }, [debounceSearchQuery])
 
 
@@ -79,28 +86,50 @@ function App() {
         setCards(newProducts);
       })
   }
-  
+
   return (
-    <>
-      <Header user={currentUser} onUpdateUser={handleUpdateUser}>
+
+    <UserContext.Provider value = {{user:currentUser, handleLike: handleProductLike}}>
+
+      <Header>
         <>
           <Logo className="logo logo_place_header" href="/" />
-          <Search onSubmit={handleFormSubmit} onInput={handleInputChange} />
+          <Routes>
+            <Route path = '/' element = {
+            <Search
+            onSubmit={handleFormSubmit}
+            onInput={handleInputChange}
+          />
+            }/>
+          </Routes>
         </>
       </Header>
 
       <main className='content container'>
         <SearchInfo searchCount={cards.length} searchText={searchQuery} />
-        <Sort />
-        <div className='contents__card'>
-          {isLoading
-            ? <Spinner />
-            : <CardList goods={cards} onProductLike={handleProductLike} currentUser={currentUser} />
-          }
-        </div>
+        <Routes>
+          <Route index element={
+            <CatalogPage
+              isLoading={isLoading}
+              cards={cards}
+              handleProductLike={handleProductLike}
+              currentUser={currentUser}
+            />
+          } />
+          <Route path = '/product/:productId' element={
+            <ProductPage
+              currentUser={currentUser}
+              isLoading={isLoading}
+            />
+          } />
+          <Route path = "*" element = {<NotFoundPage/>}
+          />
+        </Routes>
+
+
       </main>
       <Footer />
-    </>
+    </UserContext.Provider>
   );
 }
 
