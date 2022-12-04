@@ -17,6 +17,7 @@ import { ProductPage } from '../../pages/ProductPage/product-page';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { NotFoundPage } from '../../pages/NotFoundPage/not-found-page';
 import { UserContext } from '../../context/userContext';
+import { CardContext } from '../../context/cardContext';
 
 
 function App() {
@@ -76,59 +77,58 @@ function App() {
       })
   }
 
-  function handleProductLike(product) {
+  const handleProductLike = useCallback((product) => {
     const liked = isLiked(product.likes, currentUser._id)
-    api.changeLikeProduct(product._id, liked)
-      .then((newCard) => {
+    return api.changeLikeProduct(product._id, liked)
+      .then((updateCard) => {
         const newProducts = cards.map(cardState => {
-          return cardState._id === newCard._id ? newCard : cardState;
+          return cardState._id === updateCard._id ? updateCard : cardState;
         })
         setCards(newProducts);
+        return updateCard;
       })
-  }
+  }, [currentUser])
 
   return (
 
-    <UserContext.Provider value = {{user:currentUser, handleLike: handleProductLike}}>
+    <UserContext.Provider value={{ user: currentUser}}>
+      <CardContext.Provider value={{cards, handleLike: handleProductLike }}>
+        <Header>
+          <>
+            <Logo className="logo logo_place_header" href="/" />
+            <Routes>
+              <Route path='/' element={
+                <Search
+                  onSubmit={handleFormSubmit}
+                  onInput={handleInputChange}
+                />
+              } />
+            </Routes>
+          </>
+        </Header>
 
-      <Header>
-        <>
-          <Logo className="logo logo_place_header" href="/" />
+        <main className='content container'>
+          <SearchInfo searchText={searchQuery} />
           <Routes>
-            <Route path = '/' element = {
-            <Search
-            onSubmit={handleFormSubmit}
-            onInput={handleInputChange}
-          />
-            }/>
+            <Route index element={
+              <CatalogPage
+                isLoading={isLoading}
+                
+              />
+            } />
+            <Route path='/product/:productId' element={
+              <ProductPage
+                isLoading={isLoading}
+              />
+            } />
+            <Route path="*" element={<NotFoundPage />}
+            />
           </Routes>
-        </>
-      </Header>
-
-      <main className='content container'>
-        <SearchInfo searchCount={cards.length} searchText={searchQuery} />
-        <Routes>
-          <Route index element={
-            <CatalogPage
-              isLoading={isLoading}
-              cards={cards}
-              handleProductLike={handleProductLike}
-              currentUser={currentUser}
-            />
-          } />
-          <Route path = '/product/:productId' element={
-            <ProductPage
-              currentUser={currentUser}
-              isLoading={isLoading}
-            />
-          } />
-          <Route path = "*" element = {<NotFoundPage/>}
-          />
-        </Routes>
 
 
-      </main>
-      <Footer />
+        </main>
+        <Footer />
+      </CardContext.Provider>
     </UserContext.Provider>
   );
 }
