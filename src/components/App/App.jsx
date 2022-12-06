@@ -6,7 +6,6 @@ import Search from '../Search/search';
 import Logo from '../Logo/logo';
 import Sort from '../Sort/sort';
 import './index.css';
-// import data from "../../assets/data.json"
 import SearchInfo from '../SearchInfo/search-info';
 import api from '../../utils/api';
 import useDebounce from '../../hooks/useDebounce';
@@ -87,12 +86,12 @@ function App() {
         setCards(newProducts);
         return updateCard;
       })
-  }, [currentUser])
+  }, [currentUser, cards])
 
   return (
 
-    <UserContext.Provider value={{ user: currentUser}}>
-      <CardContext.Provider value={{cards, handleLike: handleProductLike }}>
+    <UserContext.Provider value={{ user: currentUser }}>
+      <CardContext.Provider value={{ cards, handleLike: handleProductLike }}>
         <Header>
           <>
             <Logo className="logo logo_place_header" href="/" />
@@ -106,14 +105,12 @@ function App() {
             </Routes>
           </>
         </Header>
-
         <main className='content container'>
           <SearchInfo searchText={searchQuery} />
           <Routes>
             <Route index element={
               <CatalogPage
                 isLoading={isLoading}
-                
               />
             } />
             <Route path='/product/:productId' element={
@@ -124,8 +121,6 @@ function App() {
             <Route path="*" element={<NotFoundPage />}
             />
           </Routes>
-
-
         </main>
         <Footer />
       </CardContext.Provider>

@@ -6,7 +6,7 @@ import s from './styles.module.css'
 export const NotFound = ({ children, title, buttonText = "На главную", buttonAction }) => {
 	return (
 		<>
-			<div className={s.notFound}>
+			<div className={s.notFound} >
 				<img src={notFound} className={s.image} aria-hidden="true" />
 				<h1 className={s.title}>{title}</h1>
 				{children && children}

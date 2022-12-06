@@ -13,40 +13,37 @@ import Sort from "../../components/Sort/sort";
 import Spinner from "../../components/Spinner";
 import { CardContext } from "../../context/cardContext";
 import { UserContext } from "../../context/userContext";
+import { useApi } from "../../hooks/useApi.js";
 import api from "../../utils/api";
 import { isLiked } from "../../utils/product";
 
 
-export const ProductPage = ({ currentUser, isLoading }) => {
+export const ProductPage = () => {
 	const { productId } = useParams();
-	const [errorState, setErrorState] = useState(null);
-	const [product, setProduct] = useState(null);
-	const {handleLike} = useContext(CardContext);;
+	const { handleLike } = useContext(CardContext);
+	// const [errorState, setErrorState] = useState(null);
+	// const [product, setProduct] = useState(null);
+
+	const handleGetProduct = useCallback(() => api.getProductById(productId), [productId]);
+
+
+	const {
+		data: product,
+		setData: setProduct,
+		loading: isLoading,
+		error: errorState
+
+	} = useApi(handleGetProduct)
 
 	const handleProductLike = useCallback(() => {
 		handleLike(product).then((updateProduct) => {
 			setProduct(updateProduct)
 		});
 
-	}, [product, handleLike])
-
-	useEffect(() => {
-		// setIsLoading(true);
-		api.getProductById(productId)
-			.then((productsData) => {
-				// setCurrentUser(userData)
-				setProduct(productsData)
-			})
-			.catch(err => setErrorState(err))
-		// .finally(() => {
-		// 	setIsLoading(false);
-		// })
-
-	}, [])
+	}, [product, handleLike, setProduct])
 
 	return (
 		<>
-
 
 			<div className='contents__card'>
 				{isLoading

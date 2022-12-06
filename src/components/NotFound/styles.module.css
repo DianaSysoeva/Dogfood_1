@@ -4,6 +4,7 @@
 	align-items: center;
 	justify-content: center;
 	height: 100%;
+	color: rgb(8, 74, 125);
 }
 .title {
 	font-weight: 700;
