@@ -1,22 +1,25 @@
 {
   "files": {
-    "main.css": "./static/css/main.94223d94.css",
-    "main.js": "./static/js/main.dabe9fbb.js",
+    "main.css": "./static/css/main.24246cdd.css",
+    "main.js": "./static/js/main.23651ff3.js",
     "static/media/logo.svg": "./static/media/logo.4f9d699de55eb25e196ecc4c87a15a5e.svg",
+    "static/media/quality.svg": "./static/media/quality.8eb6560a188790582a8aaddc99e116ea.svg",
     "static/media/instagram.svg": "./static/media/instagram.54cbf40d1b69370b6a2ec029eefc269c.svg",
     "static/media/vk.svg": "./static/media/vk.5a6b12bf142f67e2138c1e6c69952975.svg",
     "static/media/viber.svg": "./static/media/viber.b4234cd18a8ffefb8ebb172506996cea.svg",
     "static/media/whatsapp.svg": "./static/media/whatsapp.51cbd71440eaa90946070b8848c12129.svg",
+    "static/media/ic-notfound.svg": "./static/media/ic-notfound.f8d3f5f39a69335935ad07dc39feb5c2.svg",
     "static/media/save.svg": "./static/media/save.58dae31c46818bdb90d3ef1455efa9ad.svg",
+    "static/media/truck.svg": "./static/media/truck.3ee58b4e6df889b692ebd48cffac8b8f.svg",
     "static/media/ic-close-input.svg": "./static/media/ic-close-input.f01e03cf609912dcdf78b1a91e354837.svg",
     "static/media/ic-search.svg": "./static/media/ic-search.296528dfccff6373f75e8f75d02e833a.svg",
     "index.html": "./index.html",
     "static/media/telegram.svg": "./static/media/telegram.95a5ca8a1ae0a13c18da2bca3f249bf5.svg",
-    "main.94223d94.css.map": "./static/css/main.94223d94.css.map",
-    "main.dabe9fbb.js.map": "./static/js/main.dabe9fbb.js.map"
+    "main.24246cdd.css.map": "./static/css/main.24246cdd.css.map",
+    "main.23651ff3.js.map": "./static/js/main.23651ff3.js.map"
   },
   "entrypoints": [
-    "static/css/main.94223d94.css",
-    "static/js/main.dabe9fbb.js"
+    "static/css/main.24246cdd.css",
+    "static/js/main.23651ff3.js"
   ]
 }
