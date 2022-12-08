@@ -17,7 +17,7 @@ const Product = ({ pictures, onProductLike, likes = [], reviews, tags, name, pri
 	return (
 		<>
 			<div>
-				<a href="#" className="button-back" onClick={() => navigate(-1)}>Назад</a>
+				<a href="/#" className="button-back" onClick={() => navigate(-1)}>Назад</a>
 				<h1 className={s.productTitle}> {name} </h1>
 				<div>
 					<span>Артикул:</span> <b>2388907</b>
@@ -29,7 +29,7 @@ const Product = ({ pictures, onProductLike, likes = [], reviews, tags, name, pri
 				</div>
 				<div className={s.desc}>
 					<span className={discount ? s.oldPrice : s.price}>{price}&nbsp;₽</span>
-					{discount && <span className={cn(s.price, 'card__price_type_discount')}>{discount__price}&nbsp;₽</span>}
+					{discount !== 0 && <span className={cn(s.price, 'card__price_type_discount')}>{discount__price}&nbsp;₽</span>}
 					<div className={s.btnWrap}>
 						<div className={s.left}>
 							<button className={s.minus}>-</button>
