@@ -13,10 +13,15 @@ import { isLiked } from '../../utils/product';
 import Spinner from '../Spinner';
 import { CatalogPage } from '../../pages/CatalogPage/catalog-page'
 import { ProductPage } from '../../pages/ProductPage/product-page';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { NotFoundPage } from '../../pages/NotFoundPage/not-found-page';
 import { UserContext } from '../../context/userContext';
 import { CardContext } from '../../context/cardContext';
+import { FavoritePage } from '../../pages/FavoritePage/favorite-page';
+import Form from '../Form/form';
+import Modal from '../Modal/modal';
+import { Register } from '../Register/register';
+import { Login } from '../Login/login';
 
 
 function App() {
@@ -25,7 +30,12 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const debounceSearchQuery = useDebounce(searchQuery, 200);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [favorites, setFavorites] = useState([]);
+  const [isOpenModalForm, setIsOpenModalForm] = useState(false);
+  
+  const location = useLocation();
+  const backgroundLocation = location.state?.backgroundLocation;
+  const initialPath = location.state?.initialPath;
   const navigate = useNavigate();
 
   const handleRequest = useCallback(() => {
@@ -52,6 +62,8 @@ function App() {
       .then(([productsData, userData]) => {
         setCurrentUser(userData)
         setCards(productsData.products)
+        const favoriteProducts = productsData.products.filter(item => isLiked(item.likes, userData._id));
+        setFavorites(prevState => favoriteProducts);
       })
       .catch(err => console.log(err))
       .finally(() => {
@@ -76,6 +88,10 @@ function App() {
       })
   }
 
+  const addContact = useCallback((formData) => {
+    console.log(formData);
+  }, [])
+
   const handleProductLike = useCallback((product) => {
     const liked = isLiked(product.likes, currentUser._id)
     return api.changeLikeProduct(product._id, liked)
@@ -83,19 +99,29 @@ function App() {
         const newProducts = cards.map(cardState => {
           return cardState._id === updateCard._id ? updateCard : cardState;
         })
+        if (!liked) {
+          setFavorites(prevState => [...prevState, updateCard])
+        } else {
+          setFavorites(prevState => prevState.filter(card => card._id !== updateCard._id))
+        }
+
         setCards(newProducts);
         return updateCard;
       })
   }, [currentUser, cards])
 
+
   return (
 
     <UserContext.Provider value={{ user: currentUser }}>
-      <CardContext.Provider value={{ cards, handleLike: handleProductLike }}>
+      <CardContext.Provider value={{ cards, favorites, handleLike: handleProductLike }}>
+      
+        {/* <Modal active={isOpenModalForm} setActive={setIsOpenModalForm} /> */}
         <Header>
+          {/* <button onClick={() => setIsOpenModalForm(true)}>Войти</button> */}
           <>
             <Logo className="logo logo_place_header" href="/" />
-            <Routes>
+            <Routes >
               <Route path='/' element={
                 <Search
                   onSubmit={handleFormSubmit}
@@ -107,7 +133,7 @@ function App() {
         </Header>
         <main className='content container'>
           <SearchInfo searchText={searchQuery} />
-          <Routes>
+          <Routes location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location} >
             <Route index element={
               <CatalogPage
                 isLoading={isLoading}
@@ -118,9 +144,41 @@ function App() {
                 isLoading={isLoading}
               />
             } />
-            <Route path="*" element={<NotFoundPage />}
+            <Route path='/favorites' element={
+              <FavoritePage
+                isLoading={isLoading}
+              />
+            } />
+           
+            <Route path='/login' element={
+              
+               <Login/>
+            } />
+            <Route path='/register' element={      
+                <Register/>        
+            } />
+
+            <Route path='*' element={<NotFoundPage />}
             />
           </Routes>
+
+          {backgroundLocation && (
+            <Routes>
+              <Route path='/login' element={
+
+                <Modal>
+                  <Login/>
+                </Modal>
+              } />
+
+              <Route path='/register' element={
+                <Modal>
+                  <Register/>
+                </Modal>
+
+              } />
+            </Routes>
+          )}
         </main>
         <Footer />
       </CardContext.Provider>

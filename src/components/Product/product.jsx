@@ -7,22 +7,25 @@ import { calcDiscountPrice, createMarkup, isLiked } from '../../utils/product';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from '../../context/userContext';
+import { ContentHeader } from '../ContentHeader/content-header';
+import {Rating} from '../Rating/rating';
+import { useState } from 'react';
 
 const Product = ({ pictures, onProductLike, likes = [], reviews, tags, name, price, discount, description, wight, _id }) => {
 	const { user: currentUser } = useContext(UserContext)
+	const [rating, setRating] = useState(3);
 	const navigate = useNavigate();
 	const discount__price = calcDiscountPrice(price, discount);
 	const isLike = isLiked(likes, currentUser?._id);
 	const descriptionHTML = createMarkup(description);
 	return (
 		<>
-			<div>
-				<a href="/#" className="button-back" onClick={() => navigate(-1)}>Назад</a>
-				<h1 className={s.productTitle}> {name} </h1>
+			<ContentHeader title = {name}/>
 				<div>
-					<span>Артикул:</span> <b>2388907</b>
+					<span>Артикул:</span> 
+					<Rating rating = {rating} setRating= {setRating}/>
 				</div>
-			</div>
+			
 			<div className={s.product}>
 				<div className={s.imgWrapper}>
 					<img src={pictures} alt={`Изображение ${name}`} />
