@@ -8,24 +8,31 @@ import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from '../../context/userContext';
 import { ContentHeader } from '../ContentHeader/content-header';
-import {Rating} from '../Rating/rating';
+import { Rating } from '../Rating/rating';
 import { useState } from 'react';
+import { useMemo } from 'react';
+import { FormReview } from '../ FormReview/form-review';
 
-const Product = ({ pictures, onProductLike, likes = [], reviews, tags, name, price, discount, description, wight, _id }) => {
+const Product = ({ pictures, onProductLike, likes = [], reviews, tags, name, price, discount, description, wight, _id, setProduct }) => {
+	console.log(reviews);
 	const { user: currentUser } = useContext(UserContext)
-	const [rating, setRating] = useState(3);
-	const navigate = useNavigate();
+	// const [rating, setRating] = useState(null);
+	// const navigate = useNavigate();
 	const discount__price = calcDiscountPrice(price, discount);
 	const isLike = isLiked(likes, currentUser?._id);
 	const descriptionHTML = createMarkup(description);
+
+	const ratingCount = useMemo(() => Math.round(reviews.reduce((acc, r) => acc = acc + r.rating, 0) / reviews.length), [reviews])
+
+
 	return (
 		<>
-			<ContentHeader title = {name}/>
-				<div>
-					<span>Артикул:</span> 
-					<Rating rating = {rating} setRating= {setRating}/>
-				</div>
-			
+			<ContentHeader title={name} />
+			<div>
+				<span>Артикул:</span>
+				<Rating rating={ratingCount} />{reviews.length} отзыв
+			</div>
+
 			<div className={s.product}>
 				<div className={s.imgWrapper}>
 					<img src={pictures} alt={`Изображение ${name}`} />
@@ -92,6 +99,11 @@ const Product = ({ pictures, onProductLike, likes = [], reviews, tags, name, pri
 					</div>
 				</div>
 			</div>
+			<ul>
+				{reviews.map(reviewData => <li key={reviewData._id}>{reviewData.text} <Rating rating={reviewData.rating} /></li>)}
+			</ul>
+
+			<FormReview title={`Отзыв о товаре ${name}`} productId={_id} setProduct={setProduct} />
 		</>
 
 	)

@@ -22,6 +22,7 @@ import Form from '../Form/form';
 import Modal from '../Modal/modal';
 import { Register } from '../Register/register';
 import { Login } from '../Login/login';
+import { ResetPassword } from '../ResetPassword/reset-password';
 
 
 function App() {
@@ -32,7 +33,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [favorites, setFavorites] = useState([]);
   const [isOpenModalForm, setIsOpenModalForm] = useState(false);
-  
+
   const location = useLocation();
   const backgroundLocation = location.state?.backgroundLocation;
   const initialPath = location.state?.initialPath;
@@ -115,7 +116,7 @@ function App() {
 
     <UserContext.Provider value={{ user: currentUser }}>
       <CardContext.Provider value={{ cards, favorites, handleLike: handleProductLike }}>
-      
+
         {/* <Modal active={isOpenModalForm} setActive={setIsOpenModalForm} /> */}
         <Header>
           {/* <button onClick={() => setIsOpenModalForm(true)}>Войти</button> */}
@@ -149,15 +150,17 @@ function App() {
                 isLoading={isLoading}
               />
             } />
-           
-            <Route path='/login' element={
-              
-               <Login/>
-            } />
-            <Route path='/register' element={      
-                <Register/>        
-            } />
 
+            <Route path='/login' element={
+
+              <Login />
+            } />
+            <Route path='/register' element={
+              <Register />
+            } />
+            <Route path='/reset-password' element={
+              <ResetPassword />
+            } />
             <Route path='*' element={<NotFoundPage />}
             />
           </Routes>
@@ -167,13 +170,19 @@ function App() {
               <Route path='/login' element={
 
                 <Modal>
-                  <Login/>
+                  <Login />
                 </Modal>
               } />
 
               <Route path='/register' element={
                 <Modal>
-                  <Register/>
+                  <Register />
+                </Modal>
+
+              } />
+              <Route path='/reset-password' element={
+                <Modal>
+                  <ResetPassword />
                 </Modal>
 
               } />
