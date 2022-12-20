@@ -32,7 +32,6 @@ function App() {
   const debounceSearchQuery = useDebounce(searchQuery, 200);
   const [isLoading, setIsLoading] = useState(true);
   const [favorites, setFavorites] = useState([]);
-  const [isOpenModalForm, setIsOpenModalForm] = useState(false);
 
   const location = useLocation();
   const backgroundLocation = location.state?.backgroundLocation;
@@ -117,9 +116,7 @@ function App() {
     <UserContext.Provider value={{ user: currentUser }}>
       <CardContext.Provider value={{ cards, favorites, handleLike: handleProductLike }}>
 
-        {/* <Modal active={isOpenModalForm} setActive={setIsOpenModalForm} /> */}
         <Header>
-          {/* <button onClick={() => setIsOpenModalForm(true)}>Войти</button> */}
           <>
             <Logo className="logo logo_place_header" href="/" />
             <Routes >

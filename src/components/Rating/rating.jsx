@@ -5,7 +5,7 @@ import cn from 'classnames';
 import s from './index.module.css';
 
 
-export const Rating = ({ isEditable = true, rating, setRating = null }) => {
+export const Rating = ({ isEditable = false, rating, setRating = null }) => {
 	const [ratingArray, setRatingArray] = useState(new Array(5).fill(<></>));
 
 	const constructRating = useCallback((currentRating) => {

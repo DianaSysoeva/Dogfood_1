@@ -14,7 +14,7 @@ import { useMemo } from 'react';
 import { FormReview } from '../ FormReview/form-review';
 
 const Product = ({ pictures, onProductLike, likes = [], reviews, tags, name, price, discount, description, wight, _id, setProduct }) => {
-	console.log(reviews);
+
 	const { user: currentUser } = useContext(UserContext)
 	// const [rating, setRating] = useState(null);
 	// const navigate = useNavigate();
