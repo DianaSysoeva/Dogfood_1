@@ -37,13 +37,13 @@ export const ProductPage = () => {
 
 	const handleProductLike = useCallback(() => {
 		handleLike(product).then((updateProduct) => {
-			setProduct(updateProduct)
+			setProduct(updateProduct.payload.product)
 		});
 
 	}, [product, handleLike, setProduct])
 
 	return (
-		<>
+		<div className="container container_inner">
 
 			<div className='contents__card'>
 				{isLoading
@@ -53,7 +53,7 @@ export const ProductPage = () => {
 				{!isLoading && errorState && <NotFound />}
 			</div>
 
-		</>
+		</div>
 	);
 }
 

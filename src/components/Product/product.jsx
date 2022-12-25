@@ -11,13 +11,15 @@ import { ContentHeader } from '../ContentHeader/content-header';
 import { Rating } from '../Rating/rating';
 import { useState } from 'react';
 import { useMemo } from 'react';
-import { FormReview } from '../ FormReview/form-review';
+import { FormReview } from '../FormReview/form-review';
+import { useSelector } from 'react-redux';
 
 const Product = ({ pictures, onProductLike, likes = [], reviews, tags, name, price, discount, description, wight, _id, setProduct }) => {
 
-	const { user: currentUser } = useContext(UserContext)
-	// const [rating, setRating] = useState(null);
-	// const navigate = useNavigate();
+	// const { user: currentUser } = useContext(UserContext)
+	const currentUser = useSelector(state => state.user.data)
+
+
 	const discount__price = calcDiscountPrice(price, discount);
 	const isLike = isLiked(likes, currentUser?._id);
 	const descriptionHTML = createMarkup(description);

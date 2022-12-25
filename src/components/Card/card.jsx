@@ -6,10 +6,15 @@ import { UserContext } from '../../context/userContext';
 import { isLiked } from '../../utils/product';
 import './index.css';
 import { ReactComponent as Save } from './save.svg'
+import {useSelector} from 'react-redux'
 
 function Card({ name, price, _id, likes, discount, wight, description, pictures, tags }) {
 	const discount_price = Math.round(price - price * discount / 100);
-	const { user: currentUser}= useContext(UserContext);
+	// const { user: currentUser}= useContext(UserContext);
+
+	const currentUser = useSelector(state=> state.user.data);
+	const isLoading = useSelector(state=> state.user.loading);
+
 	const {handleLike: onProductLike } = useContext(CardContext);
 	const liked = isLiked(likes, currentUser?._id);
 

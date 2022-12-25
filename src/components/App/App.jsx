@@ -23,7 +23,10 @@ import Modal from '../Modal/modal';
 import { Register } from '../Register/register';
 import { Login } from '../Login/login';
 import { ResetPassword } from '../ResetPassword/reset-password';
-
+import { HomePage } from '../../pages/HomePage/home-page';
+import { useDispatch } from 'react-redux';
+import { fetchChangeLikeProduct, fetchProducts } from '../../storage/products/productsSlice';
+import { fetchUser } from '../../storage/user/userSlice';
 
 function App() {
   const [cards, setCards] = useState([]);
@@ -32,7 +35,7 @@ function App() {
   const debounceSearchQuery = useDebounce(searchQuery, 200);
   const [isLoading, setIsLoading] = useState(true);
   const [favorites, setFavorites] = useState([]);
-
+  const dispatch = useDispatch();
   const location = useLocation();
   const backgroundLocation = location.state?.backgroundLocation;
   const initialPath = location.state?.initialPath;
@@ -57,20 +60,29 @@ function App() {
   }
 
   useEffect(() => {
-    setIsLoading(true);
-    Promise.all([api.getProductList(), api.getUserInfo()])
-      .then(([productsData, userData]) => {
-        setCurrentUser(userData)
-        setCards(productsData.products)
-        const favoriteProducts = productsData.products.filter(item => isLiked(item.likes, userData._id));
-        setFavorites(prevState => favoriteProducts);
-      })
-      .catch(err => console.log(err))
-      .finally(() => {
-        setIsLoading(false);
-      })
+    const userData = dispatch(fetchUser());
+    userData.then((userDataFromServer)=> {
+      console.log(userDataFromServer)
+      dispatch(fetchProducts())
+    })
+  
+  }, [dispatch])
 
-  }, [])
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   Promise.all([api.getProductList(), api.getUserInfo()])
+  //     .then(([productsData, userData]) => {
+  //       setCurrentUser(userData)
+  //       setCards(productsData.products)
+  //       const favoriteProducts = productsData.products.filter(item => isLiked(item.likes, userData._id));
+  //       setFavorites(prevState => favoriteProducts);
+  //     })
+  //     .catch(err => console.log(err))
+  //     .finally(() => {
+  //       setIsLoading(false);
+  //     })
+
+  // }, [])
 
   useEffect(() => {
     handleRequest()
@@ -88,26 +100,24 @@ function App() {
       })
   }
 
-  const addContact = useCallback((formData) => {
-    console.log(formData);
-  }, [])
-
+  
   const handleProductLike = useCallback((product) => {
-    const liked = isLiked(product.likes, currentUser._id)
-    return api.changeLikeProduct(product._id, liked)
-      .then((updateCard) => {
-        const newProducts = cards.map(cardState => {
-          return cardState._id === updateCard._id ? updateCard : cardState;
-        })
-        if (!liked) {
-          setFavorites(prevState => [...prevState, updateCard])
-        } else {
-          setFavorites(prevState => prevState.filter(card => card._id !== updateCard._id))
-        }
+  //   const liked = isLiked(product.likes, currentUser._id)
+  //   return api.changeLikeProduct(product._id, liked)
+  //     .then((updateCard) => {
+  //       const newProducts = cards.map(cardState => {
+  //         return cardState._id === updateCard._id ? updateCard : cardState;
+  //       })
+  //       if (!liked) {
+  //         setFavorites(prevState => [...prevState, updateCard])
+  //       } else {
+  //         setFavorites(prevState => prevState.filter(card => card._id !== updateCard._id))
+  //       }
 
-        setCards(newProducts);
-        return updateCard;
-      })
+  //       setCards(newProducts);
+  //       return updateCard;
+  //     })
+  return dispatch(fetchChangeLikeProduct(product))
   }, [currentUser, cards])
 
 
@@ -120,12 +130,15 @@ function App() {
           <>
             <Logo className="logo logo_place_header" href="/" />
             <Routes >
-              <Route path='/' element={
+              <Route path='/catalog' element={
                 <Search
                   onSubmit={handleFormSubmit}
                   onInput={handleInputChange}
                 />
               } />
+              <Route path='*'
+                element={<></>}
+              />
             </Routes>
           </>
         </Header>
@@ -133,6 +146,8 @@ function App() {
           <SearchInfo searchText={searchQuery} />
           <Routes location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location} >
             <Route index element={
+              <HomePage />} />
+            <Route path='/catalog' element={
               <CatalogPage
                 isLoading={isLoading}
               />
