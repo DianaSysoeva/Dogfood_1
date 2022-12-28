@@ -15,11 +15,11 @@ import { isLiked } from "../../utils/product";
 export const ProductPage = () => {
 	const { productId } = useParams();
 	const { handleLike } = useContext(CardContext);
+
 	// const [errorState, setErrorState] = useState(null);
 	// const [product, setProduct] = useState(null);
 
 	const handleGetProduct = useCallback(() => api.getProductById(productId), [productId]);
-
 
 	const {
 		data: product,
@@ -27,18 +27,20 @@ export const ProductPage = () => {
 		loading: isLoading,
 		error: errorState
 
-	} = useApi(handleGetProduct)
+	} = useApi(handleGetProduct);
+
 
 	const handleProductLike = useCallback(() => {
 		handleLike(product).then((updateProduct) => {
-			setProduct(updateProduct.payload.product)
+			setProduct(updateProduct);
 		});
 
-	}, [product, handleLike, setProduct])
+	}, [product], handleLike, setProduct)
+
+
 
 	return (
 		<div className="container container_inside">
-
 			<div className='contents__card'>
 				{isLoading
 					? <Spinner />
@@ -46,7 +48,6 @@ export const ProductPage = () => {
 				}
 				{!isLoading && errorState && <NotFound />}
 			</div>
-
 		</div>
 	);
 }

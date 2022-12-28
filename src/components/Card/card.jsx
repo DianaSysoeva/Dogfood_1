@@ -11,7 +11,7 @@ function Card({ name, price, _id, likes, discount, wight, description, pictures,
 	const discount_price = Math.round(price - price * discount / 100);
 	const { user: currentUser}= useContext(UserContext);
 	const {handleLike: onProductLike } = useContext(CardContext);
-	
+
 	const liked = isLiked(likes, currentUser?._id);
 
 	function handleLikeClick() {
@@ -25,7 +25,7 @@ function Card({ name, price, _id, likes, discount, wight, description, pictures,
 			</div>
 			<div className="card__sticky card__sticky_type_top-right">
 				<button className={cn('card__favorite', { 'card__favorite_is-active': liked })} onClick={handleLikeClick}>
-					<Save className="card__favorite-icon" />
+				<Save className="card__favorite-icon" />
 				</button>
 			</div>
 

@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
-import CardList from '../CardList/card-list';
 import Footer from '../Footer/footer';
 import Header from '../Header/header';
 import Search from '../Search/search';
 import Logo from '../Logo/logo';
-import Sort from '../Sort/sort';
 import './index.css';
 import SearchInfo from '../SearchInfo/search-info';
 import api from '../../utils/api';
@@ -18,7 +16,6 @@ import { NotFoundPage } from '../../pages/NotFoundPage/not-found-page';
 import { UserContext } from '../../context/userContext';
 import { CardContext } from '../../context/cardContext';
 import { FavoritePage } from '../../pages/FavoritePage/favorite-page';
-import Form from '../Form/form';
 import Modal from '../Modal/modal';
 import { Register } from '../Register/register';
 import { Login } from '../Login/login';
@@ -34,7 +31,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentSortCard, setCurrentSortCard] = useState('');
   const [favoriteCard, setFavoriteCard] = useState([]);
-
   const location = useLocation();
   const backgroundLocation = location.state?.backgroundLocation;
   const initialPath = location.state?.initialPath;
