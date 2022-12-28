@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import api from '../../utils/api'
+import { SORTED } from '../../utils/constants';
 import { isLiked } from '../../utils/product';
 
 export const fetchProducts = createAsyncThunk(
@@ -39,27 +40,12 @@ export const fetchChangeLikeProduct = createAsyncThunk(
 
 )
 
-// const liked = isLiked(product.likes, currentUser._id)
-// return api.changeLikeProduct(product._id, liked)
-//   .then((updateCard) => {
-// 	 const newProducts = cards.map(cardState => {
-// 		return cardState._id === updateCard._id ? updateCard : cardState;
-// 	 })
-// 	 if (!liked) {
-// 		setFavorites(prevState => [...prevState, updateCard])
-// 	 } else {
-// 		setFavorites(prevState => prevState.filter(card => card._id !== updateCard._id))
-// 	 }
-
-// 	 setCards(newProducts);
-// 	 return updateCard;
-//   })
-// }, [currentUser, cards])
 
 const initialState = {
 	data: [],
 	total: null,
 	favoriteProducts: [],
+	currentSort: "",
 	loading: true,
 	error: null
 }
@@ -67,6 +53,28 @@ const initialState = {
 const productsSlice = createSlice({
 	name: "products",
 	initialState,
+	reducers: {
+		sortedProducts: (state, action) => {
+				switch (action.payload) {
+				  case SORTED.LOW:
+					state.data = state.data.sort((a, b) => b.price - a.price);
+					state.currentSort = action.payload;
+					break;
+				  case SORTED.CHEAP:
+					state.data = state.data.sort((a, b) => a.price - b.price);
+					state.currentSort = action.payload;
+					break;
+				  case SORTED.SALE:
+					state.data = state.data.sort((a, b) => b.discount - a.discount);
+					state.currentSort = action.payload;
+					break;
+				   default:
+					state.data = state.data.sort((a, b) => b.discount - a.discount);
+					state.currentSort = SORTED.SALE;
+				}			 
+		}
+	},
+
 	extraReducers: (builder) => {
 		builder.addCase(fetchProducts.pending, (state, action) => {
 			state.loading = true;
@@ -104,4 +112,6 @@ const productsSlice = createSlice({
 function isError(action) {
 	return action.type.endsWith('rejected');
 }
+
+export const {sortedProducts} = productsSlice.actions;
 export default productsSlice.reducer;

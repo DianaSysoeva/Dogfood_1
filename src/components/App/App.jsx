@@ -35,6 +35,8 @@ function App() {
   const debounceSearchQuery = useDebounce(searchQuery, 200);
   const [isLoading, setIsLoading] = useState(true);
   const [favorites, setFavorites] = useState([]);
+  const [currentSort, setCurrentSort] = useState('');
+
   const dispatch = useDispatch();
   const location = useLocation();
   const backgroundLocation = location.state?.backgroundLocation;
@@ -121,11 +123,26 @@ function App() {
   }, [currentUser, cards])
 
 
+  const sortedData = (currentSort) => {
+    console.log(currentSort)
+    switch (currentSort) {
+      case "low":
+        setCards(cards.sort((a, b) => b.price - a.price)); break;
+      case "cheap":
+        setCards(cards.sort((a, b) => a.price - b.price)); break;
+      case "sale":
+        setCards(cards.sort((a, b) => b.discount - a.discount)); break;
+      default:
+        setCards(cards.sort((a, b) => a.price - b.price));
+
+    }
+  }
+  
   return (
 
-    <UserContext.Provider value={{ user: currentUser }}>
-      <CardContext.Provider value={{ cards, favorites, handleLike: handleProductLike }}>
-
+    // <UserContext.Provider value={{ user: currentUser }}>
+    //   <CardContext.Provider value={{ cards, favorites,currentSort, handleLike: handleProductLike, onSortData: sortedData, setCurrentSort }}>
+<>
         <Header>
           <>
             <Logo className="logo logo_place_header" href="/" />
@@ -202,8 +219,9 @@ function App() {
           )}
         </main>
         <Footer />
-      </CardContext.Provider>
-    </UserContext.Provider>
+      {/* </CardContext.Provider>
+    </UserContext.Provider> */}
+    </>
   );
 }
 

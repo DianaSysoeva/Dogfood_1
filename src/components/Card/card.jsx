@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { CardContext } from '../../context/cardContext';
 import { UserContext } from '../../context/userContext';
@@ -7,20 +7,26 @@ import { isLiked } from '../../utils/product';
 import './index.css';
 import { ReactComponent as Save } from './save.svg'
 import {useSelector} from 'react-redux'
+import {useDispatch} from 'react-redux'
+import {fetchChangeLikeProduct} from '../../storage/products/productsSlice'
 
 function Card({ name, price, _id, likes, discount, wight, description, pictures, tags }) {
 	const discount_price = Math.round(price - price * discount / 100);
 	// const { user: currentUser}= useContext(UserContext);
-
+   const dispatch = useDispatch()
 	const currentUser = useSelector(state=> state.user.data);
 	const isLoading = useSelector(state=> state.user.loading);
 
-	const {handleLike: onProductLike } = useContext(CardContext);
+	// const {handleLike: onProductLike } = useContext(CardContext);
+
 	const liked = isLiked(likes, currentUser?._id);
 
-	function handleLikeClick() {
-		onProductLike({ _id, likes });
-	}
+	const handleLikeClick = useCallback(() => {
+		return dispatch(fetchChangeLikeProduct({ _id, likes }))
+		}, [dispatch, _id, likes ])
+	 
+	
+
 	return (
 		<div className="card">
 			<div className="card__sticky card__sticky_type_top-left">
