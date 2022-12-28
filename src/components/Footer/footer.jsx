@@ -21,22 +21,6 @@ const Footer = () => {
           <div className="footer__col">
             <nav className="menu-bottom">
               <a href="/catalogue" className="menu-bottom__item">
-                Каталог
-              </a>
-              <a href="/catalogue" className="menu-bottom__item">
-                Акции
-              </a>
-              <a href="/catalogue" className="menu-bottom__item">
-                Новости
-              </a>
-              <a href="/catalogue" className="menu-bottom__item">
-                Отзывы
-              </a>
-            </nav>
-          </div>
-          <div className="footer__col">
-            <nav className="menu-bottom">
-              <a href="/catalogue" className="menu-bottom__item">
                 Оплата и доставка
               </a>
               <a href="/catalogue" className="menu-bottom__item">

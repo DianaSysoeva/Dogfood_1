@@ -24,9 +24,7 @@ import { Register } from '../Register/register';
 import { Login } from '../Login/login';
 import { ResetPassword } from '../ResetPassword/reset-password';
 import { HomePage } from '../../pages/HomePage/home-page';
-import { useDispatch } from 'react-redux';
-import { fetchChangeLikeProduct, fetchProducts } from '../../storage/products/productsSlice';
-import { fetchUser } from '../../storage/user/userSlice';
+
 
 function App() {
   const [cards, setCards] = useState([]);
@@ -34,8 +32,9 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const debounceSearchQuery = useDebounce(searchQuery, 200);
   const [isLoading, setIsLoading] = useState(true);
-  const [favorites, setFavorites] = useState([]);
-  const dispatch = useDispatch();
+  const [currentSortCard, setCurrentSortCard] = useState('');
+  const [favoriteCard, setFavoriteCard] = useState([]);
+
   const location = useLocation();
   const backgroundLocation = location.state?.backgroundLocation;
   const initialPath = location.state?.initialPath;
@@ -60,29 +59,20 @@ function App() {
   }
 
   useEffect(() => {
-    const userData = dispatch(fetchUser());
-    userData.then((userDataFromServer)=> {
-      console.log(userDataFromServer)
-      dispatch(fetchProducts())
-    })
-  
-  }, [dispatch])
+    setIsLoading(true);
+    Promise.all([api.getProductList(), api.getUserInfo()])
+      .then(([productsInfo, userAbout]) => {
+        setCurrentUser(userAbout)
+        setCards(productsInfo.products)
+        const favoriteProducts = productsInfo.products.filter(item => isLiked(item.likes, userAbout._id));
+        setFavoriteCard(prevState => favoriteProducts);
+      })
+      .catch(err => console.log(err))
+      .finally(() => {
+        setIsLoading(false);
+      })
 
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   Promise.all([api.getProductList(), api.getUserInfo()])
-  //     .then(([productsData, userData]) => {
-  //       setCurrentUser(userData)
-  //       setCards(productsData.products)
-  //       const favoriteProducts = productsData.products.filter(item => isLiked(item.likes, userData._id));
-  //       setFavorites(prevState => favoriteProducts);
-  //     })
-  //     .catch(err => console.log(err))
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     })
-
-  // }, [])
+  }, [])
 
   useEffect(() => {
     handleRequest()
@@ -100,31 +90,43 @@ function App() {
       })
   }
 
-  
-  const handleProductLike = useCallback((product) => {
-  //   const liked = isLiked(product.likes, currentUser._id)
-  //   return api.changeLikeProduct(product._id, liked)
-  //     .then((updateCard) => {
-  //       const newProducts = cards.map(cardState => {
-  //         return cardState._id === updateCard._id ? updateCard : cardState;
-  //       })
-  //       if (!liked) {
-  //         setFavorites(prevState => [...prevState, updateCard])
-  //       } else {
-  //         setFavorites(prevState => prevState.filter(card => card._id !== updateCard._id))
-  //       }
 
-  //       setCards(newProducts);
-  //       return updateCard;
-  //     })
-  return dispatch(fetchChangeLikeProduct(product))
+  const handleProductLike = useCallback((product) => {
+    const liked = isLiked(product.likes, currentUser._id)
+    return api.changeLikeProduct(product._id, liked)
+      .then((updateCard) => {
+        const newProducts = cards.map(cardState => {
+          return cardState._id === updateCard._id ? updateCard : cardState;
+        })
+        if (!liked) {
+          setFavoriteCard(prevState => [...prevState, updateCard])
+        } else {
+          setFavoriteCard(prevState => prevState.filter(card => card._id !== updateCard._id))
+        }
+
+        setCards(newProducts);
+        return updateCard;
+      })
+
   }, [currentUser, cards])
 
+  const sortedInfoCard = (currentSortCard) => {
+    switch (currentSortCard) {
+      case "low":
+        setCards(cards.sort((a, b) => b.price - a.price)); break;
+      case "cheap":
+        setCards(cards.sort((a, b) => a.price - b.price)); break;
+      case "sale":
+        setCards(cards.sort((a, b) => b.discount - a.discount)); break;
+      default:
+        setCards(cards.sort((a, b) => a.price - b.price));
 
+    }
+  }
   return (
 
     <UserContext.Provider value={{ user: currentUser }}>
-      <CardContext.Provider value={{ cards, favorites, handleLike: handleProductLike }}>
+      <CardContext.Provider value={{ cards, favoriteCard, currentSortCard, handleLike: handleProductLike, onSortInfo: sortedInfoCard, setCurrentSortCard }}>
 
         <Header>
           <>

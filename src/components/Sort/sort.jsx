@@ -1,9 +1,44 @@
-import './index.css';
+import cn from "classnames";
+import { useContext } from "react";
+import { CardContext } from "../../context/cardContext";
+import "./index.css";
 
-function Sort () {
+const tabs = [
+	{
+		id: "cheap",
+		title: "Сначала дешёвые",
+	},
+	{
+		id: "low",
+		title: "Сначала дорогие",
+	},
+	{
+		id: "sale",
+		title: "По скидке",
+	},
+];
+
+const Sort = () => {
+	const { currentSortCard, setCurrentSortCard, onSortInfo } = useContext(CardContext);
+
+	const handleClick = (e, tab) => {
+		e.preventDefault();
+		setCurrentSortCard(tab.id);
+		onSortInfo(tab.id)
+	}
 	return (
-	null
-	)
-};
+		<div className="sort content__sort">
+			{tabs.map(tab => (
+				<div
+					className={cn("sort__link", { "sort__link_selected": currentSortCard === tab.id })}
+					key={tab.id}
+					id={tab.id}
+				>
+					<a onClick={(e) => handleClick(e, tab)}> {tab.title} </a>
+				</div>
+			))}
 
+		</div>
+	);
+};
 export default Sort;
