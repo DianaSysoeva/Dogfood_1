@@ -14,6 +14,7 @@ function Header({ children, user }) {
   const { favoriteCard } = useContext(CardContext);
   const location = useLocation();
 
+
   return (
     <header className={s.header}>
       <div className="container">

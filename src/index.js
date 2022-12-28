@@ -10,9 +10,9 @@ import { HashRouter } from 'react-router-dom';//заменила для отоб
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 
-	<BrowserRouter>
+	<HashRouter>
 		<App />
-	</BrowserRouter>
+	</HashRouter>
 
 );
 

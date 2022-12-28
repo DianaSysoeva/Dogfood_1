@@ -10,7 +10,7 @@ import api from "../../utils/api"
 
 export const FormReview = ({title = "Отзыв о товаре", productId, setProduct}) => {
 
-	const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onBlur" })
+const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onBlur" })
 const [rating, setRating] = useState(1)
 
 	const sendReviewProduct = (data) => {
