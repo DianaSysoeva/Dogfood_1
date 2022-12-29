@@ -2,6 +2,7 @@
 	width: 100%;
 	background-color: #ffe44d;
 	padding: 12px 0;
+	
  }
  
  .header__wrapper {
@@ -9,6 +10,7 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: 80px;
+
  }
  
  @media (max-width: 700px) {

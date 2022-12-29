@@ -105,7 +105,7 @@
 }
 
 .card__favorite_is-active svg {
-	fill: #f44336;
+	fill: #ea6238;
 	stroke-width: 0;
 }
 
@@ -146,10 +146,10 @@
 }
 
 .tag_type_new {
-	background-color: #03a9f4;
+	background-color: #3fae07;
 	color: #ffffff;
 }
 .tag_type_sale {
-	background-color: #01a54e;
+	background-color: #f67811d6;
 	color: #ffffff;
 }
