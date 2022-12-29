@@ -6,6 +6,7 @@
 }
 
 .footer {
+	display: flex;
 	width: 100%;
 	background-color: #ffe44d;
 	padding-top: 40px;

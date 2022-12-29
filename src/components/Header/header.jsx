@@ -1,20 +1,38 @@
 import s from './index.module.css';
+import { ReactComponent as FavoriteIcon } from './img/favorites.svg'
+import { ReactComponent as LogoutIcon } from './img/logout.svg'
+import { ReactComponent as CartIcon } from './img/cart.svg'
+import { ReactComponent as ProfileIcon } from './img/profile.svg'
+import { ReactComponent as UserIcon } from './img/user.svg'
 
-function Header({ children, user, onUpdateUser }) {
+import { useContext } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { CardContext } from "../../context/cardContext"
 
-  const handleClickButtonEdit = (e) => {
-    e.preventDefault();
-    onUpdateUser({ name: 'Диана Сысоева', about: "Ментор" })
-  }
+
+function Header({ children, user }) {
+  const { favoriteCard } = useContext(CardContext);
+  const location = useLocation();
+
+
   return (
-    <header className= {s.header}>
+    <header className={s.header}>
       <div className="container">
-        {user?.email && <span>{user?.email}</span>}
-        {user?.name && <span>{user?.name}</span>}
-
-        <button className='btn' onClick={handleClickButtonEdit}>Изменить</button>
         <div className={s.header__wrapper}>
           {children}
+          <div className={s.iconsMenu}>
+            <Link className={s.favoritesLink} to={{ pathname: "/favorites" }} >
+              <FavoriteIcon />
+              {favoriteCard.length !== 0 && <span className={s.iconBubble}>{favoriteCard.length}</span>}
+            </Link>
+
+            <Link to='/login' state={{ backgroundLocation: location, initialPath: location.pathname }} className={s.iconsMenuItem}>
+              <UserIcon />
+              Войти
+            </Link>
+
+          </div>
+
         </div>
       </div>
     </header>

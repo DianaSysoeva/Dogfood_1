@@ -13,26 +13,10 @@ const Footer = () => {
       <div className="container">
         <div className="footer__wrapper">
           <div className="footer__col">
-            <Logo className="logo footer__logo" href="#" title="Логотип" />
+            <Logo className="logo footer__logo" title="Логотип" />
             <p className="footer__copyright">
               © «Интернет-магазин DogFood.ru»
             </p>
-          </div>
-          <div className="footer__col">
-            <nav className="menu-bottom">
-              <a href="/catalogue" className="menu-bottom__item">
-                Каталог
-              </a>
-              <a href="/catalogue" className="menu-bottom__item">
-                Акции
-              </a>
-              <a href="/catalogue" className="menu-bottom__item">
-                Новости
-              </a>
-              <a href="/catalogue" className="menu-bottom__item">
-                Отзывы
-              </a>
-            </nav>
           </div>
           <div className="footer__col">
             <nav className="menu-bottom">

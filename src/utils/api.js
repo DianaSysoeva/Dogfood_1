@@ -1,5 +1,5 @@
 const onResponce = (res) => {
-	return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
+	return res.ok ? res.json() : res.json().then(err=>Promise.reject(err));
 }
 class Api {
 	constructor({ baseUrl, headers }) {
@@ -17,7 +17,11 @@ class Api {
 			headers: this._headers
 		}).then(onResponce)
 	}
-
+	getProductById(idProduct) {
+		return fetch(`${this._baseUrl}/products/${idProduct}`, {
+			headers: this._headers
+		}).then(onResponce)
+	}
 	setUserInfo(dataUser) {
 		return fetch(`${this._baseUrl}/users/me`, {
 			method: "PATCH",
@@ -25,7 +29,13 @@ class Api {
 			body: JSON.stringify(dataUser)
 		}).then(onResponce)
 	}
-
+	createReviewProduct(productId, reviewData) {
+		return fetch(`${this._baseUrl}/products/review/${productId}`, {
+			method: "POST",
+			headers: this._headers,
+			body: JSON.stringify(reviewData)
+		}).then(onResponce)
+	}
 	search(searchQuery) {
 		return fetch(`${this._baseUrl}/products/search?query=${searchQuery}`, {
 			headers: this._headers
@@ -34,7 +44,7 @@ class Api {
 
 	changeLikeProduct(productId, isLike) {
 		return fetch(`${this._baseUrl}/products/likes/${productId}`, {
-			method: isLike ? "DELETE": "PUT",
+			method: isLike ? "DELETE" : "PUT",
 			headers: this._headers
 		}).then(onResponce)
 	}
