@@ -140,7 +140,7 @@ function App() {
             </Routes>
           </>
         </Header>
-        <main className='content container'>
+        <main className='content'>
           <SearchInfo searchText={searchQuery} />
           <Routes location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location} >
             <Route index element={

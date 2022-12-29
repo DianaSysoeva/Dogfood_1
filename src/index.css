@@ -17,16 +17,16 @@ body {
 	width: 95%;
 	margin: 0 auto;
 }
-.container_inside{
-margin-top: 20px;
+.container_inside {
+	margin-top: 20px;
 }
+
 img {
 	max-width: 100%;
 }
 
 .content {
-	padding: 20px 0;
-	flex-grow: 1;
+	flex: 1;
 }
 
 .content__sort {
