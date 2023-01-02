@@ -1,7 +1,9 @@
 import { Banner } from "../../components/Banner/banner";
 import { Hero } from "../../components/Hero/hero";
+import s from './index.module.css';
 import banner_sale from './img/banner.jpg'
 import banner_product from './img/banner_2.jpg'
+import banner_productSize from './img/banner_3.png'
 export const HomePage = () => {
 	const goods = [
 		{
@@ -39,12 +41,14 @@ export const HomePage = () => {
 return (
 	<>
 	<Hero/>
+	<div className={s.banner__group}>
 	<Banner extraClass="banner_big" 
 	title = "Подарок за первый заказ!"
 	subtitle= "Легкое говяжье - пластины"
 	bg = {banner_sale}
 	colorBg = "#FF8F27"
 	/>
+	
 	<Banner extraClass="banner_middle"
 	title = "Наборы"
 	subtitle= "для дрессировки"
@@ -52,6 +56,13 @@ return (
 	price = "от 840 руб."
 	colorBg="#D8A217"
 	/>
+	<Banner extraClass="banner_middle"
+	title = "Рога северного оленя"
+	subtitle= "от 10 до 30 кг"
+	bg = {banner_productSize}
+	colorBg="#9CCD55"
+	/>
+	</div>
 	</>
 	)
 }

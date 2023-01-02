@@ -116,14 +116,12 @@ function App() {
         setCards(cards.sort((a, b) => b.discount - a.discount)); break;
       default:
         setCards(cards.sort((a, b) => a.price - b.price));
-
     }
   }
   return (
 
-    <UserContext.Provider value={{ user: currentUser }}>
+    <UserContext.Provider value={{ user: currentUser, isLoading }}>
       <CardContext.Provider value={{ cards, favoriteCard, currentSortCard, handleLike: handleProductLike, onSortInfo: sortedInfoCard, setCurrentSortCard }}>
-
         <Header>
           <>
             <Logo className="logo logo_place_header" href="/" />
@@ -144,7 +142,8 @@ function App() {
           <SearchInfo searchText={searchQuery} />
           <Routes location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location} >
             <Route index element={
-              <HomePage />} />
+              <HomePage
+              />} />
             <Route path='/catalog' element={
               <CatalogPage
                 isLoading={isLoading}
@@ -160,9 +159,7 @@ function App() {
                 isLoading={isLoading}
               />
             } />
-
             <Route path='/login' element={
-
               <Login />
             } />
             <Route path='/register' element={
@@ -178,23 +175,19 @@ function App() {
           {backgroundLocation && (
             <Routes>
               <Route path='/login' element={
-
                 <Modal>
                   <Login />
                 </Modal>
               } />
-
               <Route path='/register' element={
                 <Modal>
                   <Register />
                 </Modal>
-
               } />
               <Route path='/reset-password' element={
                 <Modal>
                   <ResetPassword />
                 </Modal>
-
               } />
             </Routes>
           )}

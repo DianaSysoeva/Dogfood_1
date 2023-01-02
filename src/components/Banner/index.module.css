@@ -34,12 +34,13 @@
 
 .banner_middle {
 	font-size: 12px;
-	width: 50%;
+	max-width: 450px;
 	min-height: 220px;
+	
 }
 
 .banner_big {
-	width: 100%;
+	max-width: 900px;
 	font-size: 18px;
 	min-height: 260px;
 	margin-bottom: 5px;
