@@ -7,3 +7,11 @@ export const VALIDATE_CONFIG = {
 	emailMessage: "Email не соответствует формату электронной почты",
 	passwordMessage: "Пароль должен содержать минимум восемь символов, одну букву латинского алфавита и одну цифру"
 }
+
+export const INITIAL_VALUE_RATING = 1;
+
+export const SORTED = {
+	LOW: "low",
+	CHEAP: "cheap",
+	SALE: "sale"
+}

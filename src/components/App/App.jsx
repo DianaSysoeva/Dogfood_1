@@ -120,8 +120,9 @@ function App() {
   }
   return (
 
-    <UserContext.Provider value={{ user: currentUser, isLoading }}>
-      <CardContext.Provider value={{ cards, favoriteCard, currentSortCard, handleLike: handleProductLike, onSortInfo: sortedInfoCard, setCurrentSortCard }}>
+    // <UserContext.Provider value={{ user: currentUser }}>
+    //   <CardContext.Provider value={{ cards, favorites,currentSort, handleLike: handleProductLike, onSortData: sortedData, setCurrentSort }}>
+<>
         <Header>
           <>
             <Logo className="logo logo_place_header" href="/" />
@@ -193,8 +194,9 @@ function App() {
           )}
         </main>
         <Footer />
-      </CardContext.Provider>
-    </UserContext.Provider>
+      {/* </CardContext.Provider>
+    </UserContext.Provider> */}
+    </>
   );
 }
 
