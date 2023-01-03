@@ -8,10 +8,12 @@ import { ReactComponent as UserIcon } from './img/user.svg'
 import { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { CardContext } from "../../context/cardContext"
+import { useSelector } from 'react-redux';
 
 
 function Header({ children, user }) {
-  const { favoriteCard } = useContext(CardContext);
+  // const { favoriteCard } = useContext(CardContext);
+  const favorites = useSelector(state => state.products.favoriteProducts)
   const location = useLocation();
 
 
@@ -23,7 +25,7 @@ function Header({ children, user }) {
           <div className={s.iconsMenu}>
             <Link className={s.favoritesLink} to={{ pathname: "/favorites" }} >
               <FavoriteIcon />
-              {favoriteCard.length !== 0 && <span className={s.iconBubble}>{favoriteCard.length}</span>}
+              {favorites.length !== 0 && <span className={s.iconBubble}>{favorites.length}</span>}
             </Link>
 
             <Link to='/login' state={{ backgroundLocation: location, initialPath: location.pathname }} className={s.iconsMenuItem}>

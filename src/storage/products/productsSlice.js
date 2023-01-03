@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import api from '../../utils/api'
 import { SORTED } from '../../utils/constants';
 import { isLiked } from '../../utils/product';
+import { isError } from '../../utils/store';
 
 export const fetchProducts = createAsyncThunk(
 	'products/fetchProducts',
@@ -40,7 +41,6 @@ export const fetchChangeLikeProduct = createAsyncThunk(
 
 )
 
-
 const initialState = {
 	data: [],
 	total: null,
@@ -55,23 +55,23 @@ const productsSlice = createSlice({
 	initialState,
 	reducers: {
 		sortedProducts: (state, action) => {
-				switch (action.payload) {
-				  case SORTED.LOW:
+			switch (action.payload) {
+				case SORTED.LOW:
 					state.data = state.data.sort((a, b) => b.price - a.price);
 					state.currentSort = action.payload;
 					break;
-				  case SORTED.CHEAP:
+				case SORTED.CHEAP:
 					state.data = state.data.sort((a, b) => a.price - b.price);
 					state.currentSort = action.payload;
 					break;
-				  case SORTED.SALE:
+				case SORTED.SALE:
 					state.data = state.data.sort((a, b) => b.discount - a.discount);
 					state.currentSort = action.payload;
 					break;
-				   default:
+				default:
 					state.data = state.data.sort((a, b) => b.discount - a.discount);
 					state.currentSort = SORTED.SALE;
-				}			 
+			}
 		}
 	},
 
@@ -88,15 +88,15 @@ const productsSlice = createSlice({
 				state.loading = false;
 			})
 			.addCase(fetchChangeLikeProduct.fulfilled, (state, action) => {
-				const {liked, product} =  action.payload;
+				const { liked, product } = action.payload;
 				state.data = state.data.map(cardState => {
-				return cardState._id === product._id ? product : cardState;
+					return cardState._id === product._id ? product : cardState;
 				})
 				if (!liked) {
 					state.favoriteProducts.push(product);
 				} else {
 					state.favoriteProducts = state.favoriteProducts.filter(card => card._id !== product._id)
-				
+
 				}
 
 			})
@@ -109,9 +109,6 @@ const productsSlice = createSlice({
 	}
 })
 
-function isError(action) {
-	return action.type.endsWith('rejected');
-}
 
-export const {sortedProducts} = productsSlice.actions;
+export const { sortedProducts } = productsSlice.actions;
 export default productsSlice.reducer;

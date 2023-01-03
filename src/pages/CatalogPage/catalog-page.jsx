@@ -1,17 +1,18 @@
 import { useContext } from "react";
+import { useSelector } from "react-redux";
 import CardList from "../../components/CardList/card-list"
 import Sort from "../../components/Sort/sort"
 import Spinner from "../../components/Spinner"
 import { CardContext } from "../../context/cardContext";
 
 export const CatalogPage = () => {
-	const { cards } = useContext(CardContext);
-
+	// const { cards } = useContext(CardContext);
+	const products = useSelector(state => state.products.data)
 	return (
 		<div className="container container_inside">
 			<Sort />
 			<div className='contents__card'>
-				<CardList cards={cards} />
+				<CardList cards={products} />
 			</div>
 
 		</div>

@@ -5,18 +5,16 @@ import truck from './img/truck.svg';
 import quality from './img/quality.svg'
 import { calcDiscountPrice, createMarkup, isLiked } from '../../utils/product';
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
-import { UserContext } from '../../context/userContext';
 import { ContentHeader } from '../ContentHeader/content-header';
 import { Rating } from '../Rating/rating';
-import { useState } from 'react';
 import { useMemo } from 'react';
 import { FormReview } from '../FormReview/form-review';
+import { useSelector } from 'react-redux';
 
 
 const Product = ({ pictures, onProductLike, likes = [], reviews, tags, name, price, discount, description, wight, _id, setProduct }) => {
 
-	const { user: currentUser } = useContext(UserContext)
+	const currentUser = useSelector(state => state.user.data);
 
 	const discount__price = calcDiscountPrice(price, discount);
 	const isLike = isLiked(likes, currentUser?._id);

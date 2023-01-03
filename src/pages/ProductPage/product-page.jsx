@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchSingleProduct, setProductState } from '../../storage/singleProduct/singleProductSlice'
 import { fetchChangeLikeProduct } from '../../storage/products/productsSlice'
 
+
 export const ProductPage = () => {
 	const { productId } = useParams();
 

@@ -13,9 +13,10 @@ import {fetchChangeLikeProduct} from '../../storage/products/productsSlice'
 function Card({ name, price, _id, likes, discount, wight, description, pictures, tags }) {
 	const discount_price = Math.round(price - price * discount / 100);
 	// const { user: currentUser}= useContext(UserContext);
-   const dispatch = useDispatch()
+   const dispatch = useDispatch();
 	const currentUser = useSelector(state=> state.user.data);
-	const isLoading = useSelector(state=> state.user.loading);
+	const isLoading = useSelector(state=>state.user.loading);
+
 
 	// const {handleLike: onProductLike } = useContext(CardContext);
 

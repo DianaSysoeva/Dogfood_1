@@ -21,6 +21,9 @@ import { Register } from '../Register/register';
 import { Login } from '../Login/login';
 import { ResetPassword } from '../ResetPassword/reset-password';
 import { HomePage } from '../../pages/HomePage/home-page';
+import { fetchChangeLikeProduct, fetchProducts } from '../../storage/products/productsSlice';
+import { useDispatch } from 'react-redux';
+import { fetchUser } from '../../storage/user/userSlice';
 
 
 function App() {
@@ -35,6 +38,7 @@ function App() {
   const backgroundLocation = location.state?.backgroundLocation;
   const initialPath = location.state?.initialPath;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleRequest = useCallback(() => {
     setIsLoading(true);
@@ -55,20 +59,11 @@ function App() {
   }
 
   useEffect(() => {
-    setIsLoading(true);
-    Promise.all([api.getProductList(), api.getUserInfo()])
-      .then(([productsInfo, userAbout]) => {
-        setCurrentUser(userAbout)
-        setCards(productsInfo.products)
-        const favoriteProducts = productsInfo.products.filter(item => isLiked(item.likes, userAbout._id));
-        setFavoriteCard(prevState => favoriteProducts);
-      })
-      .catch(err => console.log(err))
-      .finally(() => {
-        setIsLoading(false);
-      })
-
-  }, [])
+    const userData = dispatch(fetchUser());
+    userData.then(()=>{ 
+    dispatch(fetchProducts());
+  })
+  }, [dispatch])
 
   useEffect(() => {
     handleRequest()
@@ -85,25 +80,10 @@ function App() {
         setCurrentUser(newUserData)
       })
   }
-
+  
 
   const handleProductLike = useCallback((product) => {
-    const liked = isLiked(product.likes, currentUser._id)
-    return api.changeLikeProduct(product._id, liked)
-      .then((updateCard) => {
-        const newProducts = cards.map(cardState => {
-          return cardState._id === updateCard._id ? updateCard : cardState;
-        })
-        if (!liked) {
-          setFavoriteCard(prevState => [...prevState, updateCard])
-        } else {
-          setFavoriteCard(prevState => prevState.filter(card => card._id !== updateCard._id))
-        }
-
-        setCards(newProducts);
-        return updateCard;
-      })
-
+    return dispatch(fetchChangeLikeProduct(product))
   }, [currentUser, cards])
 
   const sortedInfoCard = (currentSortCard) => {
@@ -122,78 +102,78 @@ function App() {
 
     // <UserContext.Provider value={{ user: currentUser }}>
     //   <CardContext.Provider value={{ cards, favorites,currentSort, handleLike: handleProductLike, onSortData: sortedData, setCurrentSort }}>
-<>
-        <Header>
-          <>
-            <Logo className="logo logo_place_header" href="/" />
-            <Routes >
-              <Route path='/catalog' element={
-                <Search
-                  onSubmit={handleFormSubmit}
-                  onInput={handleInputChange}
-                />
-              } />
-              <Route path='*'
-                element={<></>}
-              />
-            </Routes>
-          </>
-        </Header>
-        <main className='content'>
-          <SearchInfo searchText={searchQuery} />
-          <Routes location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location} >
-            <Route index element={
-              <HomePage
-              />} />
+    <>
+      <Header>
+        <>
+          <Logo className="logo logo_place_header" href="/" />
+          <Routes >
             <Route path='/catalog' element={
-              <CatalogPage
-                isLoading={isLoading}
+              <Search
+                onSubmit={handleFormSubmit}
+                onInput={handleInputChange}
               />
             } />
-            <Route path='/product/:productId' element={
-              <ProductPage
-                isLoading={isLoading}
-              />
-            } />
-            <Route path='/favorites' element={
-              <FavoritePage
-                isLoading={isLoading}
-              />
-            } />
-            <Route path='/login' element={
-              <Login />
-            } />
-            <Route path='/register' element={
-              <Register />
-            } />
-            <Route path='/reset-password' element={
-              <ResetPassword />
-            } />
-            <Route path='*' element={<NotFoundPage />}
+            <Route path='*'
+              element={<></>}
             />
           </Routes>
+        </>
+      </Header>
+      <main className='content'>
+        <SearchInfo searchText={searchQuery} />
+        <Routes location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location} >
+          <Route index element={
+            <HomePage
+            />} />
+          <Route path='/catalog' element={
+            <CatalogPage
+              isLoading={isLoading}
+            />
+          } />
+          <Route path='/product/:productId' element={
+            <ProductPage
+              isLoading={isLoading}
+            />
+          } />
+          <Route path='/favorites' element={
+            <FavoritePage
+              isLoading={isLoading}
+            />
+          } />
+          <Route path='/login' element={
+            <Login />
+          } />
+          <Route path='/register' element={
+            <Register />
+          } />
+          <Route path='/reset-password' element={
+            <ResetPassword />
+          } />
+          <Route path='*' element={<NotFoundPage />}
+          />
+        </Routes>
 
-          {backgroundLocation && (
-            <Routes>
-              <Route path='/login' element={
-                <Modal>
-                  <Login />
-                </Modal>
-              } />
-              <Route path='/register' element={
-                <Modal>
-                  <Register />
-                </Modal>
-              } />
-              <Route path='/reset-password' element={
-                <Modal>
-                  <ResetPassword />
-                </Modal>
-              } />
-            </Routes>
-          )}
-        </main>
-        <Footer />
+        {backgroundLocation && (
+          <Routes>
+            <Route path='/login' element={
+              <Modal>
+                <Login />
+              </Modal>
+            } />
+            <Route path='/register' element={
+              <Modal>
+                <Register />
+              </Modal>
+            } />
+            <Route path='/reset-password' element={
+              <Modal>
+                <ResetPassword />
+              </Modal>
+            } />
+          </Routes>
+        )}
+      </main>
+      <Footer />
       {/* </CardContext.Provider>
     </UserContext.Provider> */}
     </>

@@ -41,7 +41,7 @@ return (
 		{tabs.map(tab => (
 			<div 
 				className={cn("sort__link", { 
-					"sort__link_selected": currentSort === tab.id 
+					"sort__link_selected": currentSortCard === tab.id 
 				})}
 				key={tab.id}
 				id={tab.id}
