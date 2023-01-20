@@ -40,8 +40,17 @@
 }
 
 .banner_big {
-	max-width: 900px;
+	max-width: 920px;
 	font-size: 18px;
 	min-height: 260px;
 	margin-bottom: 5px;
+}
+@media (max-width: 914px) {
+	.banner_big {
+	max-width: 98%;
+
+	}
+	.banner_middle {
+	max-width: 98%;
+	}
 }

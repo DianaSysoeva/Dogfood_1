@@ -13,15 +13,14 @@ import { CatalogPage } from '../../pages/CatalogPage/catalog-page'
 import { ProductPage } from '../../pages/ProductPage/product-page';
 import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { NotFoundPage } from '../../pages/NotFoundPage/not-found-page';
-import { UserContext } from '../../context/userContext';
-import { CardContext } from '../../context/cardContext';
 import { FavoritePage } from '../../pages/FavoritePage/favorite-page';
 import Modal from '../Modal/modal';
+import { UserContext } from '../../context/userContext';
+import { CardContext } from '../../context/cardContext';
 import { Register } from '../Register/register';
 import { Login } from '../Login/login';
 import { ResetPassword } from '../ResetPassword/reset-password';
 import { HomePage } from '../../pages/HomePage/home-page';
-
 
 function App() {
   const [cards, setCards] = useState([]);
@@ -29,8 +28,8 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const debounceSearchQuery = useDebounce(searchQuery, 200);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentSortCard, setCurrentSortCard] = useState('');
   const [favoriteCard, setFavoriteCard] = useState([]);
+  const [currentSortCard, setCurrentSortCard] = useState(null);
   const location = useLocation();
   const backgroundLocation = location.state?.backgroundLocation;
   const initialPath = location.state?.initialPath;
@@ -53,6 +52,7 @@ function App() {
     setSearchQuery(inputText);
     handleRequest();
   }
+
 
   useEffect(() => {
     setIsLoading(true);
