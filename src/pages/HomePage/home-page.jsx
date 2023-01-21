@@ -49,7 +49,7 @@ export const HomePage = () => {
 					bg={banner_sale}
 					colorBg="#FF8F27"
 				/>
-				{/* <div className={s.banner__group_middle}> */}
+				
 				<Banner extraClass="banner_middle"
 					title="Наборы"
 					subtitle="для дрессировки"
@@ -64,7 +64,7 @@ export const HomePage = () => {
 					colorBg="#9CCD55"
 				/>
 				</div>
-			{/* </div> */}
+			
 		</>
 	)
 }

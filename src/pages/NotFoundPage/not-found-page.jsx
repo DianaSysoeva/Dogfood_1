@@ -5,8 +5,7 @@ export const NotFoundPage = () => {
 	return (
 		<>
 		<NotFound title="Извините, страница не найдена" buttonText="На главную" />
-		<Banner extraClass = "banner_big"/>
-		<Banner extraClass = "banner_middle"/>
+	
 		</>
 	)
 }

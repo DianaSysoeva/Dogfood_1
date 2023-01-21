@@ -2,43 +2,40 @@
 	width: 100%;
 	background-color: #ffe44d;
 	padding: 12px 0;
-	
- }
- 
- .header__wrapper {
+}
+
+.header__wrapper {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	gap: 80px;
+}
 
- }
- 
- @media (max-width: 700px) {
+@media (max-width: 700px) {
 	.header__wrapper {
-	  flex-direction: column;
-	  align-items: stretch;
-	  gap: 20px;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 20px;
 	}
- }
+}
 
- 
- .iconsMenu {
+.iconsMenu {
 	display: flex;
 	gap: 30px;
 	flex-wrap: wrap;
- }
- 
- .favoritesLink {
+}
+
+.favoritesLink {
 	position: relative;
 	width: 34px;
 	height: 34px;
- }
- .iconsMenu svg {
+}
+.iconsMenu svg {
 	width: 100%;
 	height: 100%;
- }
- 
- .iconBubble {
+}
+
+.iconBubble {
 	background-color: #01a54e;
 	border-radius: 50%;
 	border: 2px solid #ffe44d;
@@ -54,15 +51,15 @@
 	position: absolute;
 	bottom: 60%;
 	left: 70%;
- }
- .iconsMenuItem {
+}
+.iconsMenuItem {
 	display: flex;
 	font-size: 18px;
 	font-weight: 600;
 	align-items: center;
 	gap: 10px;
 	text-decoration: none;
-	color: #1A1A1A;
+	color: #1a1a1a;
 }
 
 .iconsMenuItem svg {
