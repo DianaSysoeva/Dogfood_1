@@ -1,10 +1,6 @@
 import s from './index.module.css';
 import { ReactComponent as FavoriteIcon } from './img/favorites.svg'
-import { ReactComponent as LogoutIcon } from './img/logout.svg'
-import { ReactComponent as CartIcon } from './img/cart.svg'
-import { ReactComponent as ProfileIcon } from './img/profile.svg'
 import { ReactComponent as UserIcon } from './img/user.svg'
-
 import { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { CardContext } from "../../context/cardContext"

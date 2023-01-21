@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CardContext } from '../../context/cardContext';
 import { UserContext } from '../../context/userContext';
 import { NotFound } from '../NotFound/not-found';
 import Card from '../Card/card';

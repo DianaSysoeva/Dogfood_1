@@ -8,7 +8,6 @@ import SearchInfo from '../SearchInfo/search-info';
 import api from '../../utils/api';
 import useDebounce from '../../hooks/useDebounce';
 import { isLiked } from '../../utils/product';
-import Spinner from '../Spinner';
 import { CatalogPage } from '../../pages/CatalogPage/catalog-page'
 import { ProductPage } from '../../pages/ProductPage/product-page';
 import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';

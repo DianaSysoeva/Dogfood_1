@@ -1,16 +1,12 @@
 import { useContext } from "react";
 import { useCallback } from "react";
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { NotFound } from "../../components/NotFound/not-found";
 import Product from "../../components/Product/product";
 import Spinner from "../../components/Spinner";
 import { CardContext } from "../../context/cardContext";
-import { UserContext } from "../../context/userContext";
 import { useApi } from "../../hooks/useApi.js";
 import api from "../../utils/api";
-import { isLiked } from "../../utils/product";
-
 
 export const ProductPage = () => {
 	const { productId } = useParams();
