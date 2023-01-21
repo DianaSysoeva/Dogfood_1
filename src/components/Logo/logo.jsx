@@ -7,7 +7,7 @@ import logoSrc from './logo.svg';
 function Logo({className, href, ...props}) {
   const hrefValue = href ? href : null;
   return (
-     hrefValue 
+    hrefValue 
       ?  <Link to= {{pathname: hrefValue}} className={className ? className : "logo"}>
             <img src={logoSrc} alt="Логотип компании" className='logo__pic' />
         </Link>

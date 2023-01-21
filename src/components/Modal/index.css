@@ -3,9 +3,7 @@
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
-  /*делаем цвет фона черный с прозрачностью 0.4*/
   position: fixed;
-  /*при скролле модальное окно будет оставаться по середине*/
   top: 0;
   left: 0;
   border: 1px solid #353131;
@@ -14,11 +12,11 @@
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   opacity: 0;
   pointer-events: none;
   -webkit-transition: 0.5s;
@@ -35,7 +33,7 @@
   border-radius: 10px;
   background-color: white;
   -webkit-transform: scale(0.5);
-          transform: scale(0.5);
+  transform: scale(0.5);
   -webkit-transition: 0.4s all;
   transition: 0.4s all;
   max-width: 500px;
@@ -43,6 +41,5 @@
 
 .modal_content.active {
   -webkit-transform: scale(1);
-          transform: scale(1);
+  transform: scale(1);
 }
-/*# sourceMappingURL=index.css.map */

@@ -8,32 +8,31 @@ import { useState } from "react"
 import { Rating } from "../Rating/rating"
 import api from "../../utils/api"
 
-export const FormReview = ({title = "Отзыв о товаре", productId, setProduct}) => {
+export const FormReview = ({ title = "Отзыв о товаре", productId, setProduct }) => {
 
-const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onBlur" })
-const [rating, setRating] = useState(1)
+	const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onBlur" })
+	const [rating, setRating] = useState(5)
 
 	const sendReviewProduct = (data) => {
-		api.createReviewProduct(productId, {...data, rating})
+		api.createReviewProduct(productId, { ...data, rating })
 			.then(newProduct => {
 				setProduct && setProduct(newProduct)
 			})
-		
+
 	}
 
-	
 	const textReview = register('text', {
 		required: {
 			value: true,
 			message: VALIDATE_CONFIG.requiredMessage
 		},
-		
+
 	})
-	
+
 
 	return (
 		<Form title={title} handleFormSubmit={handleSubmit(sendReviewProduct)} >
-			<Rating rating = {rating} isEditable setRating={setRating}/>
+			<Rating rating={rating} isEditable setRating={setRating} />
 			<FormInput
 				{...textReview}
 				id="text"
@@ -44,7 +43,7 @@ const [rating, setRating] = useState(1)
 			{errors?.email && <p className='errorMessage'> {errors?.email?.message}</p>}
 
 			<FormButton color='yellow' type="submit">Отправить отзыв</FormButton>
-			
+
 		</Form>
 	)
 }

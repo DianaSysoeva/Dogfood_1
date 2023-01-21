@@ -34,13 +34,23 @@
 
 .banner_middle {
 	font-size: 12px;
-	width: 50%;
+	max-width: 450px;
 	min-height: 220px;
+	
 }
 
 .banner_big {
-	width: 100%;
+	max-width: 920px;
 	font-size: 18px;
 	min-height: 260px;
 	margin-bottom: 5px;
+}
+@media (max-width: 914px) {
+	.banner_big {
+	max-width: 98%;
+
+	}
+	.banner_middle {
+	max-width: 98%;
+	}
 }
