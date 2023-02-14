@@ -1,22 +1,26 @@
-import { EMAIL_REGEXP, PASSWORD_REGEXP, VALIDATE_CONFIG } from "../../utils/constants";
+import { EMAIL_REGEXP, GROUP_REGEXP, PASSWORD_REGEXP, VALIDATE_CONFIG } from "../../utils/constants";
 import Form from "../Form/form";
 import {FormInput }from "../FormInput/form-input";
 import {FormButton }from "../FormButton/form-button";
 import { useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { userRegister } from "../../storage/user/userSlice";
 
 export const Register = () => {
 	const location = useLocation();
 	const initialPath = location.state?.initialPath;
-	const { register, handleSubmit, formState: { errors } } = useForm({mode:"onBlur"})
-	const navigate = useNavigate()
+	const { register, handleSubmit, formState: { errors } } = useForm({mode:"onBlur"});
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const sendRegisterApi = (data) => {
 		console.log(data)
+		dispatch(userRegister(data))
 	}
 
 	const handleClickLoginButton = (e) => {
-		e.preventDefault()
+		e.preventDefault();
 		navigate('/login', {replace: true, state: {backgroundLocation: location, initialPath}})
 	}
 	const emailRegister = register('email', {
@@ -37,6 +41,16 @@ export const Register = () => {
 		pattern: {
 			value: PASSWORD_REGEXP,
 			message: VALIDATE_CONFIG.passwordMessage
+		}
+	})
+	const groupRegister = register('group', {
+		required: {
+			value: true,
+			message: VALIDATE_CONFIG.requiredMessage
+		},
+		pattern: {
+			value: GROUP_REGEXP,
+			message: VALIDATE_CONFIG.groupMessage
 		}
 	})
 
@@ -60,7 +74,17 @@ export const Register = () => {
 
 			/>
 			{errors?.password && <p className='errorMessage'> {errors?.password?.message}</p>}
+			
+			<FormInput
+				{...groupRegister}
+				id="group"
+				type="text"
+				placeholder="id группы в формате group-7"
 
+			/>
+			{errors?.group && <p className='errorMessage'> {errors?.group?.message}</p>}
+
+		
 			<p className="infoText">Регистрируясь на сайте, вы соглашаетесь с нашими правилами и политикой конфиденциальности и соглашаетесь на информационную рассылку </p>
 
 			<FormButton color='yellow' type="submit">Зарегистрироваться</FormButton>
@@ -70,8 +94,5 @@ export const Register = () => {
 		</Form>
 
 	)
-
-
-
 
 }

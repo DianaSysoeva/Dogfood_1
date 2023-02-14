@@ -8,13 +8,17 @@ import { ReactComponent as UserIcon } from './img/user.svg'
 import { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { CardContext } from "../../context/cardContext"
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../storage/user/userSlice';
 
 
-function Header({ children, user }) {
+
+function Header({ children }) {
   // const { favoriteCard } = useContext(CardContext);
+  const user = useSelector(state => state.user.data)
   const favorites = useSelector(state => state.products.favoriteProducts)
   const location = useLocation();
+  const dispatch = useDispatch();
 
 
   return (
@@ -28,11 +32,16 @@ function Header({ children, user }) {
               {favorites.length !== 0 && <span className={s.iconBubble}>{favorites.length}</span>}
             </Link>
 
-            <Link to='/login' state={{ backgroundLocation: location, initialPath: location.pathname }} className={s.iconsMenuItem}>
+            {!user && <Link replace to='/login' state={{ backgroundLocation: location, initialPath: location.pathname }} className={s.iconsMenuItem}>
               <UserIcon />
               Войти
             </Link>
-
+            }
+            {user && <Link to="/" className={s.iconsMenuItem} onClick={() => dispatch(logout())}>
+              <LogoutIcon />
+              Выйти
+            </Link>
+            }
           </div>
 
         </div>

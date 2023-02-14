@@ -1,5 +1,5 @@
 const onResponce = (res) => {
-	return res.ok ? res.json() : res.json().then(err=>Promise.reject(err));
+	return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
 }
 class Api {
 	constructor({ baseUrl, headers }) {
@@ -48,13 +48,35 @@ class Api {
 			headers: this._headers
 		}).then(onResponce)
 	}
+
+	register(bodyData) {
+		return fetch(`${this._baseUrl}/signup`, {
+			method: "POST",
+			headers: this._headers,
+			body: JSON.stringify(bodyData)
+		}).then(onResponce)
+	}
+
+	authorize(bodyData) {
+		return fetch(`${this._baseUrl}/signin`, {
+			method: "POST",
+			headers: this._headers,
+			body: JSON.stringify(bodyData)
+		}).then(onResponce)
+	}
+
+	checkToken(token) {
+		return fetch(`${this._baseUrl}/v2/group-7/users/me`, {
+			headers: { ...this._headers, authorization: `Bearer ${token}` },
+		}).then(onResponce)
+	}
 }
 
 const config = {
 	baseUrl: 'https://api.react-learning.ru',
 	headers: {
 		'content-type': 'application/json',
-		authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZhNTEwNzU5Yjk4YjAzOGY3NzlkMWUiLCJncm91cCI6Imdyb3VwLTciLCJpYXQiOjE2Njc5MTE5NTAsImV4cCI6MTY5OTQ0Nzk1MH0.r8ryBOBE447keN9YO87stltsLf1vBF_ATp9X0v5sHpw'
+		authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZhNTEwNzU5Yjk4YjAzOGY3NzlkMWUiLCJncm91cCI6Imdyb3VwLTciLCJpYXQiOjE2Njc5MTE5NTAsImV4cCI6MTY5OTQ0Nzk1MH0.r8ryBOBE447keN9YO87stltsLf1vBF_ATp9X0v5sHpw"
 	}
 }
 const api = new Api(config);

@@ -2,47 +2,31 @@
 .modal {
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  /*делаем цвет фона черный с прозрачностью 0.4*/
-  position: fixed;
-  /*при скролле модальное окно будет оставаться по середине*/
+  background-color: rgba(0, 0, 0, 0.4); /*делаем цвет фона черный с прозрачностью 0.4*/
+  position: fixed; /*при скролле модальное окно будет оставаться по середине*/
   top: 0;
   left: 0;
-  border: 1px solid #353131;
+  border: 1px solid rgb(53, 49, 49);
   z-index: 20;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  align-items: center;
+  justify-content: center;
   opacity: 0;
   pointer-events: none;
-  -webkit-transition: 0.5s;
   transition: 0.5s;
 }
-
 .modal.active {
   opacity: 1;
   pointer-events: all;
 }
-
 .modal_content {
   padding: 20px;
   border-radius: 10px;
   background-color: white;
-  -webkit-transform: scale(0.5);
-          transform: scale(0.5);
-  -webkit-transition: 0.4s all;
+  transform: scale(0.5);
   transition: 0.4s all;
   max-width: 500px;
 }
-
 .modal_content.active {
-  -webkit-transform: scale(1);
-          transform: scale(1);
-}
-/*# sourceMappingURL=index.css.map */
+  transform: scale(1);
+}/*# sourceMappingURL=index.css.map */

@@ -1,18 +1,23 @@
-import { useLocation, useNavigate } from "react-router-dom"
-import { useForm } from "react-hook-form"
-import { EMAIL_REGEXP, PASSWORD_REGEXP, VALIDATE_CONFIG } from "../../utils/constants"
-import Form from "../Form/form"
-import { FormInput } from "../FormInput/form-input"
-import { FormButton } from "../FormButton/form-button"
+import { useLocation, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { EMAIL_REGEXP, PASSWORD_REGEXP, VALIDATE_CONFIG } from "../../utils/constants";
+import Form from "../Form/form";
+import { FormInput } from "../FormInput/form-input";
+import { FormButton } from "../FormButton/form-button";
+import './index.css';
+import { userAuthenticate } from "../../storage/user/userSlice";
+import { useDispatch } from "react-redux";
 
 export const Login = () => {
 	const location = useLocation();
 	const initialPath = location.state?.initialPath;
 	const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onBlur" })
-	const navigate = useNavigate()
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const sendRegisterApi = (data) => {
-		console.log(data)
+		console.log(data);
+      dispatch(userAuthenticate(data))
 	}
 
 	const handleClickResetButton = (e) => {
@@ -46,6 +51,7 @@ export const Login = () => {
 
 
 	return (
+		<div className="login-page">
 		<Form title='Вход' handleFormSubmit={handleSubmit(sendRegisterApi)} >
 			<FormInput
 				{...emailRegister}
@@ -72,5 +78,6 @@ export const Login = () => {
 
 
 		</Form>
+		</div>
 	)
 }

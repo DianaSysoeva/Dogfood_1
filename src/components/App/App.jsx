@@ -22,8 +22,9 @@ import { Login } from '../Login/login';
 import { ResetPassword } from '../ResetPassword/reset-password';
 import { HomePage } from '../../pages/HomePage/home-page';
 import { fetchChangeLikeProduct, fetchProducts } from '../../storage/products/productsSlice';
-import { useDispatch } from 'react-redux';
-import { fetchUser } from '../../storage/user/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUser, loggedIn, userTokenCheck } from '../../storage/user/userSlice';
+import { ProtectedRoute } from '../ProtectedRoute/protected-route';
 
 
 function App() {
@@ -39,6 +40,8 @@ function App() {
   const initialPath = location.state?.initialPath;
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+
 
   const handleRequest = useCallback(() => {
     setIsLoading(true);
@@ -58,11 +61,16 @@ function App() {
     handleRequest();
   }
 
+
   useEffect(() => {
-    const userData = dispatch(fetchUser());
-    userData.then(()=>{ 
-    dispatch(fetchProducts());
-  })
+    const token = localStorage.getItem('jwt');
+   dispatch(userTokenCheck(token));
+    if (token) {
+      const userData = dispatch(fetchUser());
+      userData.then(() => {
+        dispatch(fetchProducts());
+      })
+    }
   }, [dispatch])
 
   useEffect(() => {
@@ -80,7 +88,7 @@ function App() {
         setCurrentUser(newUserData)
       })
   }
-  
+
 
   const handleProductLike = useCallback((product) => {
     return dispatch(fetchChangeLikeProduct(product))
@@ -126,9 +134,9 @@ function App() {
             <HomePage
             />} />
           <Route path='/catalog' element={
-            <CatalogPage
-              isLoading={isLoading}
-            />
+            <ProtectedRoute >
+              <CatalogPage />
+            </ProtectedRoute>
           } />
           <Route path='/product/:productId' element={
             <ProductPage
@@ -136,18 +144,24 @@ function App() {
             />
           } />
           <Route path='/favorites' element={
-            <FavoritePage
-              isLoading={isLoading}
-            />
+            <ProtectedRoute >
+              <FavoritePage />
+            </ProtectedRoute>
           } />
           <Route path='/login' element={
-            <Login />
+            <ProtectedRoute onlyUnAuth>
+              <Login />
+            </ProtectedRoute>
           } />
           <Route path='/register' element={
-            <Register />
+            <ProtectedRoute onlyUnAuth>
+              <Register />
+            </ProtectedRoute>
           } />
           <Route path='/reset-password' element={
-            <ResetPassword />
+            <ProtectedRoute onlyUnAuth>
+              <ResetPassword />
+            </ProtectedRoute>
           } />
           <Route path='*' element={<NotFoundPage />}
           />
@@ -156,19 +170,25 @@ function App() {
         {backgroundLocation && (
           <Routes>
             <Route path='/login' element={
-              <Modal>
-                <Login />
-              </Modal>
+              <ProtectedRoute onlyUnAuth>
+                <Modal>
+                  <Login />
+                </Modal>
+              </ProtectedRoute>
             } />
             <Route path='/register' element={
-              <Modal>
-                <Register />
-              </Modal>
+              <ProtectedRoute onlyUnAuth>
+                <Modal>
+                  <Register />
+                </Modal>
+              </ProtectedRoute>
             } />
             <Route path='/reset-password' element={
-              <Modal>
-                <ResetPassword />
-              </Modal>
+              <ProtectedRoute onlyUnAuth>
+                <Modal>
+                  <ResetPassword />
+                </Modal>
+              </ProtectedRoute>
             } />
           </Routes>
         )}
